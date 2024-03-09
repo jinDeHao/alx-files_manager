@@ -7,25 +7,25 @@ class RedisClient {
       console.error(err);
     });
   }
-  async isAlive() {
-    const alive = false;
-    this.client.on('success', () => {
-      alive = true;
-    });
-    return alive;
+  isAlive() {
+    return this.client.connected;
   }
 
   async get(key) {
-    return await this.client.get(key, (err, reply) => reply);
+    return new Promise((resolve, reject) => {
+      this.client.get(key, (err, reply) => {
+        resolve(reply);
+      });
+    });
   }
 
-  async set(key, val) {
-    await this.client.set(key, val);
+  async set(key, val, duration) {
+    this.client.set(key, val, 'EX', duration);
   }
 
   async del(key) {
     this.client.del(key);
   }
 }
-
-export const redisClient = RedisClient();
+const redisClient = new RedisClient();
+export default redisClient;
