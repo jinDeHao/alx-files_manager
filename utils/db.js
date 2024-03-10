@@ -15,21 +15,24 @@ class DBClient {
     );
     this.client.connect();
   }
+
   isAlive() {
     return this.client.isConnected();
   }
+
   async nbUsers() {
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       const db = this.client.db(this.DB_DATABASE);
       const userCollection = db.collection('users');
-      resolve(await userCollection.countDocuments());
+      resolve(userCollection.countDocuments());
     });
   }
+
   async nbFiles() {
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
       const db = this.client.db(this.DB_DATABASE);
       const userCollection = db.collection('files');
-      resolve(await userCollection.countDocuments());
+      resolve(userCollection.countDocuments());
     });
   }
 }
