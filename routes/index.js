@@ -4,7 +4,7 @@ import { getStatus, getStats } from '../controllers/AppController';
 const router = express.Router();
 
 router.get('/status', (req, res) => {
-  res.send(JSON.stringify(getStatus()));
+  res.status(200).send(JSON.stringify(getStatus()));
 });
 
 router.get('/stats', async (req, res) => {
