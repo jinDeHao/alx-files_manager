@@ -3,7 +3,8 @@ import router from './routes/index';
 
 const app = express();
 
-const port = 5000;
+const port =
+  process.env.PORT === undefined ? 5000 : process.env.PORT === undefined;
 
 app.use('/', router);
 
