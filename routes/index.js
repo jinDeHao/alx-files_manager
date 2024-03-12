@@ -4,6 +4,7 @@ import UsersController from '../controllers/UsersController';
 import AuthController from '../controllers/AuthController';
 
 const router = express.Router();
+router.use(express.json());
 
 router.get('/status', AppController.getStatus);
 
