@@ -1,5 +1,7 @@
 import dbClient from '../utils/db';
 import crypto from 'crypto';
+import { ObjectId } from 'mongodb';
+import redisClient from '../utils/redis';
 
 class UsersController {
   static postNew = async (req, res) => {
@@ -25,7 +27,17 @@ class UsersController {
     }
   };
 
-  static getMe = () => {};
+  static getMe = async (req, res) => {
+    if (req.headers['x-token'] === undefined)
+      return res.status(401).send({ error: 'Unauthorized' });
+    const key = `auth_${req.headers['x-token']}`;
+    const userID = await redisClient.get(key);
+    if (userID === null) return res.status(401).send({ error: 'Unauthorized' });
+    const database = dbClient.client.db('files_manager');
+    const collection = database.collection('users');
+    const existsUser = await collection.findOne({ _id: ObjectId(userID) });
+    return res.send({ id: userID, email: existsUser.email });
+  };
 }
 
 export default UsersController;
