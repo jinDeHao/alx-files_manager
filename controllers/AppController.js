@@ -5,15 +5,13 @@ class AppController {
   static getStatus(req, res) {
     return res
       .status(200)
-      .send({ redis: redisClient.isAlive(), db: dbClient.isAlive() });
+      .json({ redis: redisClient.isAlive(), db: dbClient.isAlive() });
   }
   static getStats = async (req, res) => {
-    return res.status(200).send(
-      {
-        users: await dbClient.nbUsers(),
-        files: await dbClient.nbFiles(),
-      }
-    );
+    return res.status(200).json({
+      users: await dbClient.nbUsers(),
+      files: await dbClient.nbFiles(),
+    });
   };
 }
 
